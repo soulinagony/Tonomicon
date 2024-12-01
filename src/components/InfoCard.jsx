@@ -56,57 +56,93 @@ const CategoryTag = styled.span`
   margin-top: 0.5rem; // Изменили margin-bottom на margin-top
   display: inline-block; // Добавили для лучшего позиционирования
 `;
-// Контейнер для DEX кнопок
+// Контейнер для DEX кнопок с улучшенной адаптивностью
 const DexButtonsContainer = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  gap: 2rem;
-  margin: 2rem 0;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
 `;
-// Стилизованная кнопка DEX
+
+// Стилизованная кнопка DEX с улучшенной адаптивностью
 const DexButton = styled.a`
   background: rgba(255, 0, 0, 0.2);
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.8rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   border: 1px solid rgba(255, 0, 0, 0.3);
-  min-width: 200px;
+  width: 180px;
   text-align: center;
+  box-sizing: border-box;
 
   &:hover {
     background: rgba(255, 0, 0, 0.3);
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
   }
 `;
+
 // Увеличенный текст описания
 const Description = styled.p`
   font-size: 1.3rem;
   text-align: center;
   margin: 1rem 0;
 `;
+
+// Контейнер для Telegram кнопок с улучшенной адаптивностью
 const TelegramButtonsContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
   margin: 1rem 0;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
 `;
 
+// Стилизованная кнопка Telegram с улучшенной адаптивностью
 const TelegramButton = styled.a`
   background: rgba(100, 108, 255, 0.2);
   color: white;
-  padding: 1rem;
+  padding: 0.8rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.3s ease;
   text-align: center;
   border: 1px solid rgba(100, 108, 255, 0.3);
+  width: 100%;
+  max-width: 280px;
+  box-sizing: border-box;
 
   &:hover {
     background: rgba(100, 108, 255, 0.3);
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
   }
 `;
 
