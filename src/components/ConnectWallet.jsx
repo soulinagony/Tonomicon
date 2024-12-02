@@ -2,37 +2,56 @@ import styled from 'styled-components';
 
 // Стилизованная кнопка с инвертированными цветами
 const WalletButton = styled.button`
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
   background: transparent;
   color: #646cff;
-  padding: 0.8em 1.5em;
   border: 2px solid #646cff;
+  padding: 0.8em 1.5em;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 1000;
-  font-family: 'Ubuntu Mono', monospace;
-  width: auto; // Явно указываем автоматическую ширину
-  min-width: fit-content; // Гарантируем, что кнопка не будет меньше контента
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  
+  @media (max-width: 768px) {
+    padding: 0.6em;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+  }
 
   &:hover {
     background: #646cff;
     color: black;
     box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
+    transform: translateY(-2px);
+  }
+
+  // Иконка кошелька
+  .wallet-icon {
+    font-size: 1.2rem;
+  }
+
+  // Текст кнопки
+  .button-text {
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
 const ConnectWallet = () => {
   const handleConnect = () => {
-    // Здесь будет логика подключения кошелька
     console.log('Connecting wallet...');
   };
 
   return (
     <WalletButton onClick={handleConnect}>
-      Connect Wallet
+      <span className="wallet-icon">👛</span>
+      <span className="button-text">Connect Wallet</span>
     </WalletButton>
   );
 };

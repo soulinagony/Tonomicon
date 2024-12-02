@@ -5,9 +5,9 @@ const FilterContainer = styled.div`
   padding: 1rem;
   margin: 2rem 0;
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const FilterButton = styled.button`
@@ -27,25 +27,53 @@ const FilterButton = styled.button`
   }
 `;
 
-const FilterBar = ({ categories, activeCategory, onCategoryChange }) => {
+const SubCategoryList = styled(FilterContainer)`
+  margin-top: 0.5rem;
+  padding-top: 0;
+`;
+
+const FilterBar = ({ 
+  categories, 
+  activeCategory, 
+  onCategoryChange,
+  showNftSubCategories,
+  onNftSubCategoryChange,
+  activeNftSubCategory 
+}) => {
+  const nftSubCategories = [
+    'Postmarks: The Jaegers',
+    'Welcome to TON'
+  ];
+
   return (
-    <FilterContainer>
-      <FilterButton 
-        active={activeCategory === 'all'}
-        onClick={() => onCategoryChange('all')}
-      >
-        Все
-      </FilterButton>
-      {categories.map(category => (
-        <FilterButton
-          key={category}
-          active={activeCategory === category}
-          onClick={() => onCategoryChange(category)}
-        >
-          {category}
-        </FilterButton>
-      ))}
-    </FilterContainer>
+    <div>
+      <FilterContainer>
+        {categories.map(category => (
+          <FilterButton
+            key={category}
+            active={category === activeCategory && 
+              (category !== 'NFTMarkets' || !activeNftSubCategory)}
+            onClick={() => onCategoryChange(category)}
+          >
+            {category}
+          </FilterButton>
+        ))}
+      </FilterContainer>
+      
+      {showNftSubCategories && (
+        <SubCategoryList>
+          {nftSubCategories.map(subCategory => (
+            <FilterButton
+              key={subCategory}
+              active={activeNftSubCategory === subCategory}
+              onClick={() => onNftSubCategoryChange(subCategory)}
+            >
+              {subCategory}
+            </FilterButton>
+          ))}
+        </SubCategoryList>
+      )}
+    </div>
   );
 };
 

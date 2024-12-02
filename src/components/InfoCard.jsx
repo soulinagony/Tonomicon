@@ -4,18 +4,19 @@ import styled from 'styled-components';
 const WideCard = styled.div`
   background: #1a1a1a;
   border-radius: 15px;
-  padding: 2rem;
+  padding: 1.5rem;
   margin: 1rem 0;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transform: translateY(0);
-  opacity: 1;
+  gap: 1.2rem;
   transition: all 0.5s ease-in-out;
+  box-sizing: border-box;
+  overflow: hidden;
 
-  &:hover {
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+  @media (max-width: 768px) {
+    padding: 1rem;
+    gap: 1rem;
   }
 `;
 
@@ -23,16 +24,28 @@ const WideCard = styled.div`
 const SectionTitle = styled.h2`
   color: #646cff;
   font-size: 1.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 // Контейнер для списка преимуществ
 const FeaturesList = styled.ul`
   list-style: none;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 // Элемент списка преимуществ
@@ -41,10 +54,15 @@ const FeatureItem = styled.li`
   background: rgba(100, 108, 255, 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    background: rgba(100, 108, 255, 0.2);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 const CategoryTag = styled.span`
@@ -56,125 +74,95 @@ const CategoryTag = styled.span`
   margin-top: 0.5rem; // Изменили margin-bottom на margin-top
   display: inline-block; // Добавили для лучшего позиционирования
 `;
-// Контейнер для DEX кнопок с улучшенной адаптивностью
-const DexButtonsContainer = styled.div`
+// Контейнер для DEX кнопок
+const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0.5rem;
   box-sizing: border-box;
-
+  
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: center;
     gap: 0.8rem;
   }
 `;
-
-// Стилизованная кнопка DEX с улучшенной адаптивностью
+// Стилизованная кнопка DEX
 const DexButton = styled.a`
   background: rgba(255, 0, 0, 0.2);
   color: white;
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 2rem;
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   border: 1px solid rgba(255, 0, 0, 0.3);
-  width: 180px;
+  min-width: 200px;
   text-align: center;
-  box-sizing: border-box;
 
   &:hover {
     background: rgba(255, 0, 0, 0.3);
-    transform: translateY(-3px);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: 280px;
-    padding: 0.7rem 1rem;
-    font-size: 1rem;
+    transform: translateY(-5px);
   }
 `;
-
 // Увеличенный текст описания
 const Description = styled.p`
   font-size: 1.3rem;
   text-align: center;
   margin: 1rem 0;
 `;
-
-// Контейнер для Telegram кнопок с улучшенной адаптивностью
-const TelegramButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  margin: 1rem 0;
-  width: 100%;
-  padding: 0 1rem;
-  box-sizing: border-box;
-`;
-
-// Стилизованная кнопка Telegram с улучшенной адаптивностью
 const TelegramButton = styled.a`
   background: rgba(100, 108, 255, 0.2);
   color: white;
-  padding: 0.8rem 1.5rem;
+  padding: 1rem;
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.3s ease;
   text-align: center;
   border: 1px solid rgba(100, 108, 255, 0.3);
-  width: 100%;
-  max-width: 280px;
-  box-sizing: border-box;
 
   &:hover {
     background: rgba(100, 108, 255, 0.3);
-    transform: translateY(-3px);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.7rem 1rem;
-    font-size: 0.9rem;
+    transform: translateY(-5px);
   }
 `;
 
 const InfoCard = ({ title, features, description, category, isDex, isTelegram }) => {
+  // Проверяем, является ли карточка SBTCampaign
+  const isSBTCampaign = category === 'SBTcampaign';
+  
   return (
     <WideCard data-category={category}>
       <SectionTitle>{title}</SectionTitle>
       <CategoryTag>{category}</CategoryTag>
       
       {isDex && (
-        <DexButtonsContainer>
+        <ButtonsContainer>
           <DexButton href="https://dedust.io" target="_blank" rel="noopener noreferrer">
             DeDust.io
           </DexButton>
           <DexButton href="https://ston.fi" target="_blank" rel="noopener noreferrer">
             Ston.Fi
           </DexButton>
-        </DexButtonsContainer>
+        </ButtonsContainer>
       )}
 
-      {isTelegram && (
-        <TelegramButtonsContainer>
-          <TelegramButton href="https://t.me/settleton_bot" target="_blank" rel="noopener noreferrer">
-            @settleton_bot
+      {/* Показываем Telegram боты только для SBTCampaign */}
+      {isSBTCampaign && (
+        <ButtonsContainer>
+          <TelegramButton href="https://t.me/tbook_incentive_bot" target="_blank">
+          @tbook_incentive_bot
           </TelegramButton>
-          <TelegramButton href="https://t.me/BroContestsBot" target="_blank" rel="noopener noreferrer">
+          <TelegramButton href="https://t.me/BroContestsBot" target="_blank">
             @BroContestsBot
           </TelegramButton>
-          <TelegramButton href="https://t.me/theontonbot" target="_blank" rel="noopener noreferrer">
+          <TelegramButton href="https://t.me/theontonbot" target="_blank">
             @theontonbot
           </TelegramButton>
-        </TelegramButtonsContainer>
+        </ButtonsContainer>
       )}
       
       <Description>{description}</Description>

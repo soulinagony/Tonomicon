@@ -2,15 +2,16 @@ import styled from 'styled-components';
 import NFTCard from '../components/NFTCard';
 import ConnectWallet from '../components/ConnectWallet';
 import InfoCard from '../components/InfoCard';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import FilterBar from '../components/FilterBar';
 import tonPunksImage from '../assets/images/tonpunks.png';
 import tonDeadImage from '../assets/images/tondead.png';
+import Header from '../components/Header';
 // Основной контейнер
 const Section = styled.section`
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 70px auto 0;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -40,12 +41,13 @@ const CardGrid = styled.div`
 // Информация о TON блокчейне
 const tonInfo = {
   title: "TON Blockchain",
-  description: "The Open Network (TON) - быстрый, безопасный и масштабируемый блокчейн",
+  description: "The Open Network (TON) - масштабируемый и безопасный блокчейн, разработанный для массового внедрения Web3",
   features: [
-    "Высокая пропускная способность",
-    "Низкие комиссии за транзакции",
-    "Proof-of-Stake консенсус",
-    "Смарт-контракты на FunC"
+    "Уникальная архитектура с бесконечным шардингом",
+    "Instant Hypercube Routing для мгновенных транзакций",
+    "TON Virtual Machine (TVM) для смарт-контрактов",
+    "Proof-of-Stake с динамическим набором валидаторов",
+    "Нативная поддержка DNS, HTTP, Proxy и Storage"
   ],
   category: 'Infrastructure',
   isTelegram: true // Добавляем флаг для телеграм кнопок
@@ -53,13 +55,13 @@ const tonInfo = {
 
 // Информация о DEX платформах
 const dexInfo = {
-  title: "Децентрализованные биржи",
-  description: "Торгуйте токенами без посредников на DEX платформах",
+  title: "DeFi на TON",
+  description: "Децентрализованные финансовые протоколы с высокой скоростью и низкими комиссиями",
   features: [
-    "Ston.fi - Автоматический маркет-мейкер",
-    "DeDust - Торговля токенами и NFT",
-    "Пулы ликвидности с высокой доходностью",
-    "Мгновенные свопы токенов"
+    "DEX агрегаторы с оптимальными свопами",
+    "Автоматические маркет-мейкеры (AMM)",
+    "Кросс-чейн мосты с основными сетями",
+    "Децентрализованный стейкинг TON"
   ],
   category: 'DeFi Projects',
   isDex: true // Добавляем флаг для определения DEX карточки
@@ -67,47 +69,64 @@ const dexInfo = {
 
 // Информация о DApps и токенах
 const dappsInfo = {
-  title: "DApps и Токены",
-  description: "Децентрализованные приложения и токены в экосистеме TON",
+  title: "TON Services",
+  description: "Основные сервисы и протоколы экосистемы TON",
   features: [
-    "Telegram-боты и мини-приложения",
-    "Мемкоины с реальной утилитарностью",
-    "Кросс-чейн мосты и обмены",
-    "Децентрализованные протоколы"
+    "TON DNS - децентрализованная система доменных имен",
+    "TON Storage - распределенное хранилище данных",
+    "TON Sites - децентрализованный хостинг",
+    "TON Proxy - анонимный доступ к сервисам TON"
   ],
   category: 'Social'
 };
 
 // Информация о протоколе Eva
 const evaInfo = {
-  title: "Протокол Eva",
-  description: "Децентрализованное кредитование и заимствование на TON",
+  title: "TON DeFi Protocols",
+  description: "Протоколы децентрализованного финансирования в экосистеме TON",
   features: [
-    "Безопасное кредитование под залог",
-    "Гибкие условия займов",
-    "Автоматическое начисление процентов",
-    "Управление ликвидностью"
+    "Lending протоколы с обеспечением",
+    "Liquid Staking решения",
+    "Yield Farming платформы",
+    "Децентрализованные биржи (DEX)"
   ],
   category: 'DeFi Projects'
 };
 
+// Информация о SBT кампаниях
+const sbtInfo = {
+  title: "TON SBT",
+  description: "Soul Bound Tokens - нетрансферабельные токены для подтверждения достижений",
+  features: [
+    "Подтверждение участия в экосистеме",
+    "Доступ к эксклюзивным функциям",
+    "Программы вознаграждений",
+    "Интеграция с Telegram"
+  ],
+  category: 'SBTcampaign',
+  isTelegram: true // Флаг для отображения Telegram ботов
+};
+
 // Основной компонент Home
 const Home = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState('main');
+  const [showNftSubCategories, setShowNftSubCategories] = useState(false);
+  const [activeNftSubCategory, setActiveNftSubCategory] = useState('');
   
   const categories = [
-    'Postmarks: The Jaegers',
-    'DeFi Projects',
-    'Welcome to TON',
+    'main',
+    'DeFi Projects', 
+    'SBTcampaign',
+    'NFTMarkets',
     'Social',
-    'Infrastructure',
-    'SBTcampaign'
+    'DiveDeep'
   ];
   const infoCards = [
     tonInfo,
     dexInfo,
     dappsInfo,
-    evaInfo
+    evaInfo,
+    sbtInfo // Добавляем новую карточку
   ];
    
   // Массив с данными NFT коллекций
@@ -172,13 +191,7 @@ const Home = () => {
       link: "https://getgems.io/collection/EQDyWZIoTXuEUaM6ROtnKs0lmtkJVWEg1vXMimm_A_rdMIyE?utm_source=homepage&utm_medium=top_collections&utm_campaign=collection_overview",
       category: "Welcome to TON"
     },
-    {
-      image: "https://getgems.io/assets/main/tonrobots.png",
-      title: "TON Robots",
-      description: "Memorable token for completing an onboarding quest about the TON ecosystem",
-      link: "https://getgems.io/collection/TON_ROBOTS",
-      category: "NFT Collections"
-    }
+    
   ];
   // Объединяем контент и добавляем тип
   const allContent = [
@@ -186,53 +199,92 @@ const Home = () => {
     ...nftCollections.map(nft => ({ ...nft, type: 'nft' }))
   ];
 
-  // Фильтруем и сортируем весь контент
-  const filteredContent = activeCategory === 'all'
-  ? allContent
-  : allContent.filter(item => item.category === activeCategory)
-      .sort((a, b) => {
-        // При выборе NFT Collections, NFT карточки идут первыми
-        if (activeCategory === 'NFT Collections') {
-          return a.type === 'nft' ? -1 : 1;
+  // Обновляем логику фильтрации
+  const filteredContent = useMemo(() => {
+    // Для главной страницы показываем весь контент
+    if (activeCategory === 'main') {
+      return [...allContent].sort((a, b) => {
+        // Информационные карточки всегда первые
+        if (a.type !== b.type) {
+          return a.type === 'info' ? -1 : 1;
         }
-        // Для других категорий, информационные карточки идут первыми
-        return a.type === 'info' ? -1 : 1;
+        return 0;
       });
- 
+    }
+    
+    // Для NFT подкатегорий
+    if (activeNftSubCategory) {
+      return allContent.filter(item => 
+        item.type === 'nft' && item.category === activeNftSubCategory
+      );
+    }
+    
+    // Для остальных категорий
+    return allContent.filter(item => item.category === activeCategory);
+  }, [activeCategory, activeNftSubCategory, allContent]);
+
+  // Обновляем обработчики
+  const handleCategoryChange = (category) => {
+    if (category === 'NFTMarkets') {
+      setShowNftSubCategories(true);
+      setActiveCategory(category);
+    } else {
+      setActiveCategory(category);
+      setShowNftSubCategories(false);
+      setActiveNftSubCategory('');
+    }
+  };
+
+  const handleNftSubCategoryChange = (subCategory) => {
+    setActiveNftSubCategory(subCategory);
+    // Не скрываем подкатегории при выборе
+    // setShowNftSubCategories(false); - удаляем эту строку
+  };
+
   return (
-  <Section>
-    <ConnectWallet />
-    <h1>TON Blockchain & NFT</h1>
-    
-    <FilterBar 
-      categories={categories}
-      activeCategory={activeCategory}
-      onCategoryChange={setActiveCategory}
-    />
-    
-    {/* Сначала рендерим информационные карточки */}
-    {filteredContent
-      .filter(item => item.type === 'info')
-      .map((item, index) => (
-        <InfoCard key={`info-${index}`} {...item} />
-    ))}
-      
-      {/* Затем рендерим NFT карточки в сетке */}
-    {filteredContent.filter(item => item.type === 'nft').length > 0 && (
-      <CardGrid>
+    <>
+      <Header>
+        <ConnectWallet />
+      </Header>
+      <Section>
+        <h1>TON Blockchain & NFT</h1>
+        
+        <FilterBar 
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+          showNftSubCategories={showNftSubCategories}
+          onNftSubCategoryChange={handleNftSubCategoryChange}
+          activeNftSubCategory={activeNftSubCategory}
+        />
+        
+        {/* Информационные карточки */}
         {filteredContent
-          .filter(item => item.type === 'nft')
+          .filter(item => item.type === 'info')
           .map((item, index) => (
-            <NFTCard key={`nft-${index}`} {...item} />
+            <InfoCard 
+              key={`info-${index}`} 
+              {...item} 
+              priority={index} // Добавляем приоритет для анимации
+            />
         ))}
-      </CardGrid>
-    )}
-    
-      
-      
-      
-    </Section>
-    
+          
+        {/* NFT карточки */}
+        {filteredContent.filter(item => item.type === 'nft').length > 0 && (
+          <CardGrid>
+            {filteredContent
+              .filter(item => item.type === 'nft')
+              .map((item, index) => (
+                <NFTCard 
+                  key={`nft-${index}`} 
+                  {...item}
+                  priority={index} // Добавляем приоритет для анимации
+                />
+          ))}
+          </CardGrid>
+        )}
+      </Section>
+    </>
   );
 };
       
